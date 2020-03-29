@@ -1,0 +1,105 @@
+= ECSE 321 - Individual Assignment
+
+Please read the deliverable description document on MyCourses for general rules and grading guidelines. See you individual technical specification in the PDF file located at the root of this repository.
+
+== Overview
+
+This README gives you a general overview of what you will need to do to complete the part of the assignment that will be autograded. However, this README only tells you what to do and suggests an order for completing the exercise, but it does not explain how to complete it! You will need to use your knowledge gained from the course to implement what is required for your individual assignment. 
+
+== Server URLs
+
+Once you have completed the assignment, please replace the two placeholders with the Backend and Frontend server URLs so that the graders can find your deployed apps easily.
+
+Backend URL: _To be added once ready_
+
+Frontend URL: _To be added once ready_
+
+== Backend
+
+=== Step 1
+
+a) To start off, you will need to set up a database on Heroku. To do this, you should go to your Heroku account and link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_creating_a_heroku_app[create a new application]. Once you’ve done this, click on your application and add the Heroku Postgres add-on (you can see add-ons in the top left in the ‘Overview’ tab. 
+
+a) Once you’ve added this, set the `SPRING_DATASOURCE_URL` link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_running_the_backend_application_from_eclipse[environment variable]. 
+
+**IMPORTANT**: You do not need to deploy your application to Heroku to get full score for your assignment.
+
+a) Adding Heroku Postgres to your Heroku app is all you need! Once the datasource is configured, you should be able to run the application with no errors.
+
+
+=== Step 2
+
+a) Once your database is set up, you can begin writing code. For this step you need to create and modify the domain model. You can add the required classes in the `ca.mcgill.ecse321.eventregistration.model` package in `EventRegistration-Backend/src/main/java`. To figure out which classes, attributes,and associations you need to create and modify, look at your assignment PDF.
+
+a) In each domain model class, you may need to add the appropriate fields for that class and the appropriate associations. To do this, you can write the code manually (including the JPA annotations) or use UML Lab. To figure out what to add to each new domain model class, look at what the service test cases are testing (in the `ca.mcgill.ecse321.eventregistration.service` package under `EventRegistration-Backend/src/test/java`). 
+
+a) The tests will fail initially (and have compilation errors), and you must make them pass! Note that you should not modify your local tests, since your grade on the assignment is based on a test suite that is run separately (that you cannot modify). In order to evaluate that your code does not specializes on the test cases provided to you, your code will be evaluated using a few simple but hidden test cases as well.
+
+=== Step 3
+
+a) For each domain model class that you create, you may need to add a corresponding link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_crud_repositories[Repository class] to support persisting objects. These should be added inside the `ca.mcgill.ecse321.eventregistration.dao` package under `EventRegistration-Backend/src/main/java`. 
+
+a) You may need to add some additional methods to your repository classes in order to meet the requirements of the tests. 
+
+=== Step 4
+
+a) Once you have the repository and domain model classes created, you will need to update the link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_implementing_service_methods[service class] in the `ca.mcgill.ecse321.eventregistration.service` package under `EventRegistration-Backend/src/main/java`. 
+
+a) You may need to add new fields for your new Repository classes, and you may need to create some new service methods for your new classes. To figure out which methods to add, look at where the compile errors are in the service tests. A lot of these errors are due to methods that don’t exist—a hint that you should create them!
+
+a) Make sure to pay attention to the error messages that you return in your service methods, since they will need to match what the test cases expect. Always check why a particular test case failed, since the test cases expect a specific result. Sometimes you may have the correct logic, but you could be returning a different error message than is expected (for example).
+
+=== Step 5
+
+a) Once your backend up to the service layer is completed, you need to create link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_exposing_service_functionality_via_a_restful_api[DTO classes] for your added domain model classes. Create them in the `ca.mcgill.ecse321.eventregistration.dto` package under `EventRegistration-Backend/src/main/java`. These DTO classes need to have the appropriate fields and constructors.
+
+=== Step 6
+
+a) The last step for the backend is to amend the link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_exposing_service_functionality_via_a_restful_api[REST Controller] class. This class can be found in the `ca.mcgill.ecse321.eventregistration.controller` package under `EventRegistration-Backend/src/main/java`. 
+
+a) To figure out which URL routes you need to add, take a look at which endpoints are called from the frontend: go to the `registration.js` file under `EventRegistration-Frontend/src/components` and see which URLs are being called (i.e. with AXIOS) in the JavaScript methods. 
+
+a) Make sure to note how the endpoints are being called from the frontend (i.e. with parameters, path variables, or without those), since this will be important for making the proper URLs in your controller. 
+
+== Frontend
+
+**IMPORTANT**: To run the automated frontend tests, you need to have the Chrome browser version 80 installed on your system.
+
+a) Once your backend is up and running, you can move to the frontend section of the project. Before you do anything you want to make sure the following two things: (i) your backend is running locally so that your frontend can interact with it when you test your changes, (ii) install the dependencies of the project using npm as follows:
+
+```
+cd EventRegistration-Frontend
+npm install
+```
+
+=== Step 1
+
+a) The assignment asks you to add some components to the EventResistration Vue component. You can find the code for the EventRegistration component in `EventRegistration-Frontend/src/components/EventRegistration.vue`. The template is where the html of the component lives. This is what creates and positions the components that you see on the website like buttons, input fields, etc. This is the first part that you want to change. 
+
+a) You should link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_create_a_static_vue_js_component[add the new html elements] that you need according to the assignment specification and verify that they are displayed when you run the frontend (you can do this using `npm start`).
+
+a) When evaluating your solution, tests look for certain IDs of your html elements. The ID that each element should have is included in the specs of the tests which you can find in `EventRegistration-Frontend/test/e2e/specs`. Inside this folder you will find a `config.json` or `config.js` file for each thing that you are being asked to add to the project. The IDs are the string starting with a `=`, for example `’=event-name-input’`. So your input component should be as follows:
+
+```
+<input id="event-name-input" type="text" v-model="newEvent.name" placeholder="Event Name">
+```
+
+Note that you should not include the `=` in the ID of the actual html element.
+
+=== Step 2
+
+a) After adding the new elements to your components, you need to link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_vue_js_components_with_dynamic_content[provide them with behavior]. This is done in the script part of the Vue component. You will see that the script part only has this:
+
+```
+<script src="./registration.js"></script>
+```
+
+This is because the actual script is in `EventRegistration-Frontend/src/components/registration.js`. In this file you should make changes to the `data` and `methods` sections. 
+
+a) In particular, you need to add the code that will allow you frontend to link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_calling_backend_services[talk to your new backend endpoints using Axios]. For example, for components where you need to display data that was previously saved in your database you probably want to use your `GET` http methods. On the other hand, for submitting new instances like a new payment or a new person you want to access you `POST` http methods.
+
+=== Step 3
+
+a) Once you have added the functions to talk to your backend in the script section of the component you just need to link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_vue_js_components_with_dynamic_content[connect the new functionality to the html elements] you added in Step 1.
+
+a) Finally, you can check if your solution is passing the provided tests by running `npm test`.
