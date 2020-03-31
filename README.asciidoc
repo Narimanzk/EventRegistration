@@ -22,7 +22,7 @@ a) To start off, you will need to set up a database on Heroku. To do this, you s
 
 a) Once you’ve added this, set the `SPRING_DATASOURCE_URL` link:https://mcgill-ecse321-winter2020.github.io/ecse321-tutorial-notes/#_running_the_backend_application_from_eclipse[environment variable]. 
 
-**IMPORTANT**: You do not need to deploy your application to Heroku to get full score for your assignment.
+
 
 a) Adding Heroku Postgres to your Heroku app is all you need! Once the datasource is configured, you should be able to run the application with no errors.
 
