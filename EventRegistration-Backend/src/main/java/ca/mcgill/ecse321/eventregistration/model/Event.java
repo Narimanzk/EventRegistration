@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.sql.Date;
@@ -49,4 +50,15 @@ public class Event {
     public Time getEndTime() {
         return this.endTime;
     }
+    
+	private Organizer organizer;
+
+	@ManyToOne(optional = false)
+	public Organizer getOrganizer() {
+		return this.organizer;
+	}
+
+	public void setOrganizer(Organizer organizer) {
+		this.organizer = organizer;
+	}
 }
