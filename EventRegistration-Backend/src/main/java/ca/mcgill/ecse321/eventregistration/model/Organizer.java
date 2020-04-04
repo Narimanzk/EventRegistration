@@ -2,26 +2,26 @@ package ca.mcgill.ecse321.eventregistration.model;
 
 import java.util.Set;
 
-import javax.persistence.DiscriminatorValue;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
-@Entity
-@DiscriminatorValue("Organizer")
+@Entity(name = "Organizer")
+@Table(name = "organizer")
 public class Organizer extends Person {
 	
-	@OneToMany(mappedBy = "name")
-	private Set<Organizer> organizes;
+	@OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Organizer> organizers;
 
-	public Set<Organizer> getOrganizes() {
-		return organizes;
+	public Set<Organizer> getOrganizers() {
+		return organizers;
 	}
 
-	public void setOrganizes(Set<Organizer> organizes) {
-		this.organizes = organizes;
+	public void setOrganizers(Set<Organizer> organizers) {
+		this.organizers = organizers;
 	}
-
 
 
 }

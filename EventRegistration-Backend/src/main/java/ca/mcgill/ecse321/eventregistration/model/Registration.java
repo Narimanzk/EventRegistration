@@ -39,5 +39,16 @@ public class Registration {
 	public void setEvent(Event event) {
 		this.event = event;
 	}
+	
+	private CarShow carShow;
+	
+	@ManyToOne(optional = false)
+	public CarShow getCarShow() {
+		return this.carShow;
+	}
+
+	public void setCarShow(CarShow carShow) {
+		this.carShow = carShow;
+	}
 
 }

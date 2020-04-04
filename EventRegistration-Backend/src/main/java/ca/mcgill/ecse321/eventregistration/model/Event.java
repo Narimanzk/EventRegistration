@@ -3,9 +3,11 @@ package ca.mcgill.ecse321.eventregistration.model;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.sql.Date;
@@ -49,4 +51,15 @@ public class Event {
     public Time getEndTime() {
         return this.endTime;
     }
+    
+	private Organizer organizer;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	public Organizer getOrganizer() {
+		return this.organizer;
+	}
+
+	public void setOrganizer(Organizer organizer) {
+		this.organizer = organizer;
+	}
 }
