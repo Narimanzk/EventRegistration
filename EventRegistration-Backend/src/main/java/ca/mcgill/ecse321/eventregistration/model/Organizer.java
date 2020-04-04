@@ -2,11 +2,13 @@ package ca.mcgill.ecse321.eventregistration.model;
 
 import java.util.Set;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 
 @Entity
+@DiscriminatorValue("Organizer")
 public class Organizer extends Person {
 	
 	@OneToMany(mappedBy = "name")
