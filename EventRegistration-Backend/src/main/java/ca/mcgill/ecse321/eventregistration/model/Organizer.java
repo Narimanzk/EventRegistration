@@ -6,7 +6,6 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,14 +14,6 @@ import javax.persistence.Table;
 @Table(name = "organizer")
 @Access(AccessType.PROPERTY)
 public class Organizer extends Person {
-	
-	private String name;
-	
-	@Id
-	@Override
-	public String getName() {
-	      return this.name;
-	}
 	
 	
 	private Set<Organizer> organizers;
