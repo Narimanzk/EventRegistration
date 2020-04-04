@@ -1,11 +1,11 @@
 ***********************************************************
-Timestamp: 20 04 03 Fri 04:07:42 (UTC)
+Timestamp: 20 04 04 Sat 04:16:27 (UTC)
 
 Backend results:
 0 tests completed, 0 failed, 35 skipped (compile error)
 
 Frontend results:
-From the total of 19 tests, 0 were successful
+From the total of 19 tests, 0.0 were successful
 
 Total score (percentage):
 0.00%
@@ -15,8 +15,8 @@ Total score (percentage):
 Backend Gradle build log:
 
 Initialized native services in: /home/travis/.gradle/native
-The client will now receive all logging from the daemon (pid: 5439). The daemon log file: /home/travis/.gradle/daemon/5.1.1/daemon-5439.out.log
-Starting 2nd build in daemon [uptime: 32.84 secs, performance: 98%]
+The client will now receive all logging from the daemon (pid: 5382). The daemon log file: /home/travis/.gradle/daemon/5.1.1/daemon-5382.out.log
+Starting 2nd build in daemon [uptime: 31.898 secs, performance: 97%]
 Using 2 worker leases.
 Starting Build
 Settings evaluated using settings file '/home/travis/build/McGill-ECSE321-Winter2020/assignment-grader/EventRegistration-Backend/settings.gradle'.
@@ -56,18 +56,18 @@ Resolving global dependency management for project 'EventRegistration-Backend'
 Excluding [org.apache.tomcat:tomcat-annotations-api]
 Excluding []
 Skipping task ':compileJava' as it is up-to-date.
-:compileJava (Thread[Daemon worker,5,main]) completed. Took 1.302 secs.
-:processResources (Thread[Execution worker for ':',5,main]) started.
+:compileJava (Thread[Daemon worker,5,main]) completed. Took 1.359 secs.
+:processResources (Thread[Daemon worker,5,main]) started.
 
 > Task :processResources UP-TO-DATE
 Skipping task ':processResources' as it is up-to-date.
-:processResources (Thread[Execution worker for ':',5,main]) completed. Took 0.007 secs.
-:classes (Thread[Execution worker for ':',5,main]) started.
+:processResources (Thread[Daemon worker,5,main]) completed. Took 0.003 secs.
+:classes (Thread[Daemon worker,5,main]) started.
 
 > Task :classes UP-TO-DATE
 Skipping task ':classes' as it has no actions.
-:classes (Thread[Execution worker for ':',5,main]) completed. Took 0.0 secs.
-:compileTestJava (Thread[Execution worker for ':',5,main]) started.
+:classes (Thread[Daemon worker,5,main]) completed. Took 0.0 secs.
+:compileTestJava (Thread[Daemon worker,5,main]) started.
 
 > Task :compileTestJava
 Excluding []
@@ -581,7 +581,7 @@ import ca.mcgill.ecse321.eventregistration.model.Bitcoin;
 100 errors
 
 > Task :compileTestJava FAILED
-:compileTestJava (Thread[Execution worker for ':',5,main]) completed. Took 3.166 secs.
+:compileTestJava (Thread[Daemon worker,5,main]) completed. Took 2.859 secs.
 
 FAILURE: Build failed with an exception.
 
