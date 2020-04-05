@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.eventregistration.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -234,6 +235,9 @@ public class EventRegistrationService {
 			throw new IllegalArgumentException(error);
 		}
 		event.setOrganizer(organizer);
+		if(organizer.getOrganizes() == null) {
+			organizer.setOrganizes(new HashSet<>());
+		}
 		organizer.getOrganizes().add(event);
 		organizerRepository.save(organizer);
 		eventRepository.save(event);
@@ -252,6 +256,15 @@ public class EventRegistrationService {
 		}
 		return organizerRepository.findByName(name);
 
+	}
+	
+	@Transactional
+	public List<Event> getOrganizes(Organizer organizer){
+		List<Event> organizes = new ArrayList<>();
+		for (Event events : eventRepository.findByOrganizer(organizer)) {
+			organizes.add(events);
+		}
+		return organizes;
 	}
 
 	@Transactional
