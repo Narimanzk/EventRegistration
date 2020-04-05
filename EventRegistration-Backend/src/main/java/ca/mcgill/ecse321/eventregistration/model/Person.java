@@ -25,13 +25,13 @@ private String name;
 }
     
     
-	private Set<Bitcoin> bitcoins;
-
-	@OneToMany(targetEntity=Bitcoin.class, mappedBy="person", fetch=FetchType.EAGER)
-	public Set<Bitcoin> getBitcoins() {
-		return bitcoins;
-	}
-	public void setBitcoins(Set<Bitcoin> bitcoins) {
-		this.bitcoins = bitcoins;
-	}
+//	private Set<Bitcoin> bitcoins;
+//
+//	@OneToMany(targetEntity=Bitcoin.class, mappedBy="person", fetch=FetchType.EAGER)
+//	public Set<Bitcoin> getBitcoins() {
+//		return bitcoins;
+//	}
+//	public void setBitcoins(Set<Bitcoin> bitcoins) {
+//		this.bitcoins = bitcoins;
+//	}
 }

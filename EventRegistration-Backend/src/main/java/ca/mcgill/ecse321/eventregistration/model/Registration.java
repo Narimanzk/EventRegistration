@@ -41,21 +41,21 @@ public class Registration {
 		this.event = event;
 	}
 	
-	private CarShow carShow;
-	
-	@ManyToOne(optional = false)
-	public CarShow getCarShow() {
-		return this.carShow;
-	}
-
-	public void setCarShow(CarShow carShow) {
-		this.carShow = carShow;
-	}
+//	private CarShow carShow;
+//	
+//	@ManyToOne(optional = false)
+//	public CarShow getCarShow() {
+//		return this.carShow;
+//	}
+//
+//	public void setCarShow(CarShow carShow) {
+//		this.carShow = carShow;
+//	}
 	
 	
 	private Bitcoin bitcoin;
 
-	@OneToOne
+	@OneToOne(optional = true)
 	public Bitcoin getBitcoin() {
 		return bitcoin;
 	}

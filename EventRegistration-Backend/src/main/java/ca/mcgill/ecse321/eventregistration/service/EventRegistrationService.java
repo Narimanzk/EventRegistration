@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class EventRegistrationService {
 	private OrganizerRepository organizerRepository;
 	@Autowired
 	private CarShowRepository carShowRepository;
+	@Autowired
+	private BitcoinRepository bitcoinRepository;
 
 	@Transactional
 	public Person createPerson(String name) {
@@ -273,5 +276,47 @@ public class EventRegistrationService {
 		carShow.setMake(make);
 		carShowRepository.save(carShow);
 		
+	}
+
+
+	public Bitcoin createBitcoinPay(String userID, int amount) {
+		Pattern BITCOIN_PATTERN = Pattern.compile("^\\w{4}-\\d{4}$");
+		String error = "";
+		if(userID == null || userID.trim().length() == 0 || !BITCOIN_PATTERN.matcher(userID).matches()) {
+			error += "User id is null or has wrong format!";
+		}
+		if (amount < 0) {
+			error += "Payment amount cannot be negative!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
+		Bitcoin bitcoin = new Bitcoin();
+		bitcoin.setUserID(userID);
+		bitcoin.setAmount(amount);
+		bitcoinRepository.save(bitcoin);
+		return bitcoin;
+		
+	}
+
+
+	public void pay(Registration registration, Bitcoin bitcoin) {
+		String error = "";
+		if(registration == null || bitcoin == null) {
+			error += "Registration and payment cannot be null!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		List<Registration> regitrations = getAllRegistrations();
+		for(int i=0; i<regitrations.size();i++) {
+			if(regitrations.get(i).getId() == registration.getId()) {
+				registration.setBitcoin(bitcoin);
+				registrationRepository.save(registration);
+			}
+		}
 	}
 }
