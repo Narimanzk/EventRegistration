@@ -4,8 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,15 +16,16 @@ import javax.persistence.Table;
 public class Organizer extends Person {
 	
 	
-	private Set<Organizer> organizers;
+	private Set<Event> organizes;
 	
-	@OneToMany(mappedBy = "organizers", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Organizer> getOrganizers() {
-		return organizers;
+
+	@OneToMany(targetEntity=Event.class, mappedBy="organizer", fetch=FetchType.EAGER)
+	public Set<Event> getOrganizes() {
+		return organizes;
 	}
 
-	public void setOrganizers(Set<Organizer> organizers) {
-		this.organizers = organizers;
+	public void setOrganizes(Set<Event> organizes) {
+		this.organizes = organizes;
 	}
 
 

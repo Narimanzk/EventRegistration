@@ -23,6 +23,10 @@ public class EventRegistrationService {
 	private PersonRepository personRepository;
 	@Autowired
 	private RegistrationRepository registrationRepository;
+	@Autowired
+	private OrganizerRepository organizerRepository;
+	@Autowired
+	private CarShowRepository carShowRepository;
 
 	@Transactional
 	public Person createPerson(String name) {
@@ -184,5 +188,90 @@ public class EventRegistrationService {
 			resultList.add(t);
 		}
 		return resultList;
+	}
+
+	@Transactional
+	public Organizer createOrganizer(String name) {
+		String error = "";
+		List<Organizer> organizers = getAllOrganizers();
+		for(int i=0; i<organizers.size();i++) {
+			if((organizers.get(i).getName()).equals(name)) {
+				error += "Organizer has already been created!";
+				break;
+			}
+		}
+		if(name == null || name.trim().length() == 0) {
+			error += "Organizer name cannot be empty!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		Organizer organizer = new Organizer();
+		organizer.setName(name);
+		organizerRepository.save(organizer);
+		return organizer;
+	}
+
+	@Transactional
+	public List<Organizer> getAllOrganizers() {
+		return toList(organizerRepository.findAll());
+	}
+
+	@Transactional
+	public void organizesEvent(Organizer organizer, Event event) {
+		String error = "";
+		if(organizer == null) {
+			error += "Organizer needs to be selected for organizes!";
+		}
+		if(eventRepository.findByName(event.getName()) == null) {
+			error += "Event does not exist!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		event.setOrganizer(organizer);
+		organizer.getOrganizes().add(event);
+		organizerRepository.save(organizer);
+		eventRepository.save(event);
+
+		
+	}
+
+	@Transactional
+	public Organizer getOrganizer(String name) {
+		String error = "";
+		if(name == null || name.trim().length() == 0) {
+			error += "Person name cannot be empty!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		return organizerRepository.findByName(name);
+		
+	}
+
+
+	public List<CarShow> getAllCarShows() {
+		return toList(carShowRepository.findAll());
+	}
+
+
+	public void createCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
+		CarShow carShow = new CarShow();
+		buildEvent(carShow, name, carShowDate, startTime, endTime);
+		String error = "";
+		if(make == null || make.trim().length() == 0) {
+			error += "CarShow make cannot be empty!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		carShow.setMake(make);
+		carShowRepository.save(carShow);
+		
 	}
 }
