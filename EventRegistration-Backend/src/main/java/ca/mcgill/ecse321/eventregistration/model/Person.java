@@ -1,37 +1,26 @@
 package ca.mcgill.ecse321.eventregistration.model;
 
-import java.util.Set;
-
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="person")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType=DiscriminatorType.STRING, name="ROLE")
 public class Person{
-private String name;
+	private String name;
 
-    public void setName(String value) {
-        this.name = value;
-    }
-    @Id
-    public String getName() {
-        return this.name;
-}
-    
-    
-	private Set<Bitcoin> bitcoins;
+	public void setName(String value) {
+		this.name = value;
+	}
+	@Id
+	public String getName() {
+		return this.name;
+	}
 
-	@OneToMany(targetEntity=Bitcoin.class, mappedBy="person", fetch=FetchType.EAGER)
-	public Set<Bitcoin> getBitcoins() {
-		return bitcoins;
-	}
-	public void setBitcoins(Set<Bitcoin> bitcoins) {
-		this.bitcoins = bitcoins;
-	}
 }

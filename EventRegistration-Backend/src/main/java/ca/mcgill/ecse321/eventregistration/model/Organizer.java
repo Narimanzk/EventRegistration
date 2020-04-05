@@ -4,27 +4,31 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-@Entity(name = "Organizer")
-@Table(name = "organizer")
-@Access(AccessType.PROPERTY)
+
+@Entity
+@DiscriminatorValue("Organizer")
 public class Organizer extends Person {
 	
 	
-	private Set<Organizer> organizers;
+	private Set<Event> organizes;
 	
-	@OneToMany(mappedBy = "organizers", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Organizer> getOrganizers() {
-		return organizers;
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OneToMany(mappedBy="organizer")
+	public Set<Event> getOrganizes() {
+		return organizes;
 	}
 
-	public void setOrganizers(Set<Organizer> organizers) {
-		this.organizers = organizers;
+	public void setOrganizes(Set<Event> organizes) {
+		this.organizes = organizes;
 	}
 
 
