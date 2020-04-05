@@ -19,7 +19,7 @@ public class Organizer extends Person {
 	private Set<Event> organizes;
 	
 
-	@OneToMany(targetEntity=Event.class, mappedBy="organizer", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="organizer")
 	public Set<Event> getOrganizes() {
 		return organizes;
 	}
