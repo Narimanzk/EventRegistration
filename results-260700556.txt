@@ -1,5 +1,5 @@
 ***********************************************************
-Timestamp: 20 04 05 Sun 04:07:05 (UTC)
+Timestamp: 20 04 05 Sun 13:26:10 (UTC)
 
 Backend results:
 0 tests completed, 0 failed, 35 skipped (compile error)
@@ -15,8 +15,8 @@ Total score (percentage):
 Backend Gradle build log:
 
 Initialized native services in: /home/travis/.gradle/native
-The client will now receive all logging from the daemon (pid: 5429). The daemon log file: /home/travis/.gradle/daemon/5.1.1/daemon-5429.out.log
-Starting 2nd build in daemon [uptime: 32.54 secs, performance: 97%]
+The client will now receive all logging from the daemon (pid: 5451). The daemon log file: /home/travis/.gradle/daemon/5.1.1/daemon-5451.out.log
+Starting 2nd build in daemon [uptime: 33.427 secs, performance: 98%]
 Using 2 worker leases.
 Starting Build
 Settings evaluated using settings file '/home/travis/build/McGill-ECSE321-Winter2020/assignment-grader/EventRegistration-Backend/settings.gradle'.
@@ -56,12 +56,12 @@ Resolving global dependency management for project 'EventRegistration-Backend'
 Excluding [org.apache.tomcat:tomcat-annotations-api]
 Excluding []
 Skipping task ':compileJava' as it is up-to-date.
-:compileJava (Thread[Daemon worker,5,main]) completed. Took 1.128 secs.
+:compileJava (Thread[Daemon worker,5,main]) completed. Took 1.678 secs.
 :processResources (Thread[Execution worker for ':',5,main]) started.
 
 > Task :processResources UP-TO-DATE
 Skipping task ':processResources' as it is up-to-date.
-:processResources (Thread[Execution worker for ':',5,main]) completed. Took 0.002 secs.
+:processResources (Thread[Execution worker for ':',5,main]) completed. Took 0.003 secs.
 :classes (Thread[Execution worker for ':',5,main]) started.
 
 > Task :classes UP-TO-DATE
@@ -446,7 +446,7 @@ Compiling with JDK Java compiler API.
 73 errors
 
 > Task :compileTestJava FAILED
-:compileTestJava (Thread[Execution worker for ':',5,main]) completed. Took 2.921 secs.
+:compileTestJava (Thread[Execution worker for ':',5,main]) completed. Took 3.372 secs.
 
 FAILURE: Build failed with an exception.
 
@@ -459,5 +459,5 @@ Run with --stacktrace option to get the stack trace. Run with --debug option to 
 
 * Get more help at https://help.gradle.org
 
-BUILD FAILED in 4s
+BUILD FAILED in 6s
 3 actionable tasks: 1 executed, 2 up-to-date
