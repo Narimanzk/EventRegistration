@@ -278,7 +278,7 @@ public class EventRegistrationService {
 	}
 
 	@Transactional
-	public void createCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
+	public CarShow createCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
 		String error = "";
 		CarShow carShow = new CarShow();
 		buildEvent(carShow, name, carShowDate, startTime, endTime);
@@ -292,11 +292,12 @@ public class EventRegistrationService {
 
 		carShow.setMake(make);
 		carShowRepository.save(carShow);
+		return carShow;
 
 	}
 
 	@Transactional
-	public void updateCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
+	public CarShow updateCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
 		String error = "";
 		if(make == null || make.trim().length() == 0) {
 			error += "CarShow make cannot be empty!";
@@ -323,6 +324,7 @@ public class EventRegistrationService {
 		CarShow carShow = carShowRepository.findByName(name);
 		carShow.setMake(make);
 		carShowRepository.save(carShow);
+		return carShow;
 
 	}
 
