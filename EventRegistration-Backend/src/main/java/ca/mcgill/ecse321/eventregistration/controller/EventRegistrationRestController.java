@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -68,18 +69,6 @@ public class EventRegistrationRestController {
 
 		Registration r = service.register(p, e);
 		return convertToDto(r, p, e);
-	}
-
-	@PostMapping(value = { "/pay", "/pay/" })
-	public RegistrationDto pay(@RequestParam(name = "bitcoin") BitcoinDto bDto,
-			@RequestParam(name = "personName") PersonDto pDto,
-			@RequestParam(name = "eventName") EventDto eDto) throws IllegalArgumentException {
-		// @formatter:on
-		Person p = service.getPerson(pDto.getName());
-		Event e = service.getEvent(eDto.getName());
-
-		Registration r = service.getRegistrationByPersonAndEvent(p, e);
-		return convertToDto(r);
 	}
 
 
@@ -233,6 +222,17 @@ public class EventRegistrationRestController {
 		return convertToDto(bitcoin);
 	}
 
+	@PostMapping(value = { "/pay", "/pay/" })
+	public RegistrationDto pay(@RequestBody Map<String, Object> payload) throws IllegalArgumentException {
+		Person p = service.getPerson((String) payload.get("person"));
+		Event e = service.getEvent((String) payload.get("event"));
+		Registration r = service.getRegistrationByPersonAndEvent(p, e);
+		Bitcoin bitcoin = service.getBitcoinPay((String) payload.get("bitcoin"));
+		service.pay(r, bitcoin);
+		return convertToDto(r);
+	}
+
+
 //	@PutMapping(value = { "/bitcoins"}, consumes = "application/json", produces = "application/json")
 //	public BitcoinDto updateBitcoinPay(@RequestBody BitcoinDto bitcoin) {
 //		Bitcoin domainBitcoin = service.updateBitcoinPay(bitcoin.getUserID(), bitcoin.getAmount());
@@ -345,16 +345,6 @@ public class EventRegistrationRestController {
 		for (Organizer organizer : allOrganizers) {
 			if (organizer.getName().equals(oDto.getName())) {
 				return organizer;
-			}
-		}
-		return null;
-	}
-	
-	private Registration convertToDomainObject(RegistrationDto rDto) {
-		List<Registration> allregistrations = service.getAllRegistrations();
-		for (Registration registration : allregistrations) {
-			if (registration.getId() == rDto.getId()) {
-				return registration;
 			}
 		}
 		return null;
