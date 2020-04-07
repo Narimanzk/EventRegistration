@@ -270,6 +270,14 @@ public class EventRegistrationService {
 	//A
 	@Transactional
 	public List<Event> getOrganizes(Organizer organizer){
+		String error = "";
+		if(organizer == null) {
+			error += "Organizer does not exist!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
 		List<Event> organizes = new ArrayList<>();
 		for (Event events : eventRepository.findByOrganizer(organizer)) {
 			organizes.add(events);
