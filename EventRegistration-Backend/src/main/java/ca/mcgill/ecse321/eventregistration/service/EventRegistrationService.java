@@ -192,7 +192,7 @@ public class EventRegistrationService {
 		}
 		return resultList;
 	}
-
+	//A
 	@Transactional
 	public Organizer createOrganizer(String name) {
 		String error = "";
@@ -215,14 +215,14 @@ public class EventRegistrationService {
 		organizerRepository.save(organizer);
 		return organizer;
 	}
-
+	
 	@Transactional
 	public List<Organizer> getAllOrganizers() {
 		return toList(organizerRepository.findAll());
 	}
-
+	//A
 	@Transactional
-	public void organizesEvent(Organizer organizer, Event event) {
+	public Organizer organizesEvent(Organizer organizer, Event event) {
 		String error = "";
 		if(organizer == null) {
 			error += "Organizer needs to be selected for organizes!";
@@ -230,6 +230,15 @@ public class EventRegistrationService {
 		if(eventRepository.findByName(event.getName()) == null) {
 			error += "Event does not exist!";
 		}
+		if(organizer != null) {
+			for(int i=0; i<getOrganizes(organizer).size();i++) {
+				if((getOrganizes(organizer).get(i).getName()).equals(event.getName())) {
+					error += "Organizer is already assigned to the event!";
+					break;
+				}
+			}
+		}
+
 		error = error.trim();
 		if(error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -241,9 +250,10 @@ public class EventRegistrationService {
 		organizer.getOrganizes().add(event);
 		organizerRepository.save(organizer);
 		eventRepository.save(event);
+		return organizer;
 
 	}
-
+	//A
 	@Transactional
 	public Organizer getOrganizer(String name) {
 		String error = "";
@@ -257,7 +267,7 @@ public class EventRegistrationService {
 		return organizerRepository.findByName(name);
 
 	}
-	
+	//A
 	@Transactional
 	public List<Event> getOrganizes(Organizer organizer){
 		List<Event> organizes = new ArrayList<>();
@@ -267,18 +277,18 @@ public class EventRegistrationService {
 		return organizes;
 	}
 
-	@Transactional
-	public void deleteOrganizer(String name) throws IllegalArgumentException{
-		organizerRepository.deleteById(name);
-	}
-
+//	@Transactional
+//	public void deleteOrganizer(String name) throws IllegalArgumentException{
+//		organizerRepository.deleteById(name);
+//	}
+	
 	@Transactional
 	public List<CarShow> getAllCarShows() {
 		return toList(carShowRepository.findAll());
 	}
-
+	//A
 	@Transactional
-	public void createCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
+	public CarShow createCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
 		String error = "";
 		CarShow carShow = new CarShow();
 		buildEvent(carShow, name, carShowDate, startTime, endTime);
@@ -292,50 +302,52 @@ public class EventRegistrationService {
 
 		carShow.setMake(make);
 		carShowRepository.save(carShow);
+		return carShow;
 
 	}
 
-	@Transactional
-	public void updateCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
-		String error = "";
-		if(make == null || make.trim().length() == 0) {
-			error += "CarShow make cannot be empty!";
-		}
-		if (name == null || name.trim().length() == 0) {
-			error = error + "Event name cannot be empty! ";
-		}
-		if (carShowDate == null) {
-			error = error + "Event date cannot be empty! ";
-		}
-		if (startTime == null) {
-			error = error + "Event start time cannot be empty! ";
-		}
-		if (endTime == null) {
-			error = error + "Event end time cannot be empty! ";
-		}
-		if (endTime != null && startTime != null && endTime.before(startTime)) {
-			error = error + "Event end time cannot be before event start time!";
-		}
-		error = error.trim();
-		if(error.length() > 0) {
-			throw new IllegalArgumentException(error);
-		}
-		CarShow carShow = carShowRepository.findByName(name);
-		carShow.setMake(make);
-		carShowRepository.save(carShow);
+//	@Transactional
+//	public CarShow updateCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
+//		String error = "";
+//		if(make == null || make.trim().length() == 0) {
+//			error += "CarShow make cannot be empty!";
+//		}
+//		if (name == null || name.trim().length() == 0) {
+//			error = error + "Event name cannot be empty! ";
+//		}
+//		if (carShowDate == null) {
+//			error = error + "Event date cannot be empty! ";
+//		}
+//		if (startTime == null) {
+//			error = error + "Event start time cannot be empty! ";
+//		}
+//		if (endTime == null) {
+//			error = error + "Event end time cannot be empty! ";
+//		}
+//		if (endTime != null && startTime != null && endTime.before(startTime)) {
+//			error = error + "Event end time cannot be before event start time!";
+//		}
+//		error = error.trim();
+//		if(error.length() > 0) {
+//			throw new IllegalArgumentException(error);
+//		}
+//		CarShow carShow = carShowRepository.findByName(name);
+//		carShow.setMake(make);
+//		carShowRepository.save(carShow);
+//		return carShow;
+//
+//	}
 
-	}
+//	@Transactional
+//	public CarShow getCarShow(String name) {
+//		return carShowRepository.findByName(name);
+//	}
 
-	@Transactional
-	public CarShow getCarShow(String name) {
-		return carShowRepository.findByName(name);
-	}
-
-	@Transactional
-	public void deleteCarShow(String name) throws IllegalArgumentException{
-		carShowRepository.deleteById(name);
-	}
-
+//	@Transactional
+//	public void deleteCarShow(String name) throws IllegalArgumentException{
+//		carShowRepository.deleteById(name);
+//	}
+	//A
 	@Transactional
 	public Bitcoin createBitcoinPay(String userID, int amount) {
 		Pattern BITCOIN_PATTERN = Pattern.compile("^\\w{4}-\\d{4}$");
@@ -357,29 +369,29 @@ public class EventRegistrationService {
 		return bitcoin;
 	}
 
+//	@Transactional
+//	public Bitcoin updateBitcoinPay(String userID, int amount) {
+//		Pattern BITCOIN_PATTERN = Pattern.compile("^\\w{4}-\\d{4}$");
+//		String error = "";
+//		if(userID == null || userID.trim().length() == 0 || !BITCOIN_PATTERN.matcher(userID).matches()) {
+//			error += "User id is null or has wrong format!";
+//		}
+//		if (amount < 0) {
+//			error += "Payment amount cannot be negative!";
+//		}
+//		error = error.trim();
+//		if(error.length() > 0) {
+//			throw new IllegalArgumentException(error);
+//		}
+//		Bitcoin bitcoin = bitcoinRepository.findByUserID(userID);
+//		bitcoin.setAmount(amount);
+//		bitcoinRepository.save(bitcoin);
+//		return bitcoin;
+//
+//	}
+	//A
 	@Transactional
-	public Bitcoin updateBitcoinPay(String userID, int amount) {
-		Pattern BITCOIN_PATTERN = Pattern.compile("^\\w{4}-\\d{4}$");
-		String error = "";
-		if(userID == null || userID.trim().length() == 0 || !BITCOIN_PATTERN.matcher(userID).matches()) {
-			error += "User id is null or has wrong format!";
-		}
-		if (amount < 0) {
-			error += "Payment amount cannot be negative!";
-		}
-		error = error.trim();
-		if(error.length() > 0) {
-			throw new IllegalArgumentException(error);
-		}
-		Bitcoin bitcoin = bitcoinRepository.findByUserID(userID);
-		bitcoin.setAmount(amount);
-		bitcoinRepository.save(bitcoin);
-		return bitcoin;
-
-	}
-
-	@Transactional
-	public void pay(Registration registration, Bitcoin bitcoin) {
+	public Registration pay(Registration registration, Bitcoin bitcoin) {
 		String error = "";
 		if(registration == null || bitcoin == null) {
 			error += "Registration and payment cannot be null!";
@@ -395,6 +407,7 @@ public class EventRegistrationService {
 				registrationRepository.save(registration);
 			}
 		}
+		return registration;
 	}
 
 	@Transactional
@@ -406,9 +419,9 @@ public class EventRegistrationService {
 	public Bitcoin getBitcoinPay(String userID) {
 		return bitcoinRepository.findByUserID(userID);
 	}
-
-	@Transactional
-	public void deleteBitcoinPay(String userID) {
-		bitcoinRepository.deleteById(userID);
-	}
+	
+//	@Transactional
+//	public void deleteBitcoinPay(String userID) {
+//		bitcoinRepository.deleteById(userID);
+//	}
 }
