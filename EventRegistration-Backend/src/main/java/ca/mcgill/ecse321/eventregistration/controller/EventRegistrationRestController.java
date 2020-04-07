@@ -70,17 +70,16 @@ public class EventRegistrationRestController {
 		return convertToDto(r, p, e);
 	}
 
-	@PostMapping(value = { "/event", "/event/" })
-	public EventDto organizesEvent(@RequestParam(name = "organizer") OrganizerDto oDto,
-			@RequestParam(name = "event") EventDto eDto) throws IllegalArgumentException {
+	@PostMapping(value = { "/pay", "/pay/" })
+	public RegistrationDto pay(@RequestParam(name = "bitcoin") BitcoinDto bDto,
+			@RequestParam(name = "personName") PersonDto pDto,
+			@RequestParam(name = "eventName") EventDto eDto) throws IllegalArgumentException {
 		// @formatter:on
-
-		// Both the organizer and the event are identified by their names
-		Organizer o = service.getOrganizer(oDto.getName());
+		Person p = service.getPerson(pDto.getName());
 		Event e = service.getEvent(eDto.getName());
 
-		e = service.organizesEvent(o, e);
-		return convertToDto(e);
+		Registration r = service.getRegistrationByPersonAndEvent(p, e);
+		return convertToDto(r);
 	}
 
 
@@ -152,6 +151,19 @@ public class EventRegistrationRestController {
 		Organizer organizer = service.createOrganizer(name);
 		return convertToDto(organizer);
 	}
+	
+	@PostMapping(value = { "/organizes", "/organizes/" })
+	public OrganizerDto organizesEvent(@RequestParam(name = "organizer") OrganizerDto oDto,
+			@RequestParam(name = "event") EventDto eDto) throws IllegalArgumentException {
+		// @formatter:on
+
+		// Both the organizer and the event are identified by their names
+		Organizer o = service.getOrganizer(oDto.getName());
+		Event e = service.getEvent(eDto.getName());
+
+		o = service.organizesEvent(o, e);
+		return convertToDto(o);
+	}
 
 	@GetMapping(value = { "/events/organizer/{name}", "/events/organizer/{name}/" })
 	public List<EventDto> getEventsOfOrganizer(@PathVariable("name") OrganizerDto oDto) {
@@ -173,10 +185,10 @@ public class EventRegistrationRestController {
 		return organizers;
 	}
 
-	@DeleteMapping(value = { "/organizers/{name}" })
-	public void deleteOrganizer(@PathVariable("name") String name) throws IllegalArgumentException{
-		service.deleteOrganizer(name);
-	}
+//	@DeleteMapping(value = { "/organizers/{name}" })
+//	public void deleteOrganizer(@PathVariable("name") String name) throws IllegalArgumentException{
+//		service.deleteOrganizer(name);
+//	}
 
 	@PostMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
 	public CarShowDto createCarShow(@PathVariable("name") String name, @RequestParam Date date,
@@ -197,22 +209,22 @@ public class EventRegistrationRestController {
 		return carShowDtos;
 	}
 
-	@GetMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
-	public CarShowDto getCarShowByName(@PathVariable("name") String name) throws IllegalArgumentException {
-		return convertToDto(service.getCarShow(name));
-	}
+//	@GetMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
+//	public CarShowDto getCarShowByName(@PathVariable("name") String name) throws IllegalArgumentException {
+//		return convertToDto(service.getCarShow(name));
+//	}
 
-	@PutMapping(value = { "/carShows"}, consumes = "application/json", produces = "application/json")
-	public CarShowDto updateCarShow(@RequestBody CarShowDto carShow) {
-		CarShow domainCarShow = service.updateCarShow(carShow.getName(), carShow.getDate(),carShow.getStartTime(), carShow.getEndTime(), carShow.getMake());
-		CarShowDto carShowDto = convertToDto(domainCarShow);
-		return carShowDto;
-	}
+//	@PutMapping(value = { "/carShows"}, consumes = "application/json", produces = "application/json")
+//	public CarShowDto updateCarShow(@RequestBody CarShowDto carShow) {
+//		CarShow domainCarShow = service.updateCarShow(carShow.getName(), carShow.getDate(),carShow.getStartTime(), carShow.getEndTime(), carShow.getMake());
+//		CarShowDto carShowDto = convertToDto(domainCarShow);
+//		return carShowDto;
+//	}
 
-	@DeleteMapping(value = { "/carShows/{name}" })
-	public void deleteCarShow(@PathVariable("name") String name) throws IllegalArgumentException{
-		service.deleteCarShow(name);
-	}
+//	@DeleteMapping(value = { "/carShows/{name}" })
+//	public void deleteCarShow(@PathVariable("name") String name) throws IllegalArgumentException{
+//		service.deleteCarShow(name);
+//	}
 
 	@PostMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
 	public BitcoinDto createBitcoinPay(@PathVariable("userID") String userID, @RequestParam int amount) throws IllegalArgumentException {
@@ -221,12 +233,12 @@ public class EventRegistrationRestController {
 		return convertToDto(bitcoin);
 	}
 
-	@PutMapping(value = { "/bitcoins"}, consumes = "application/json", produces = "application/json")
-	public BitcoinDto updateBitcoinPay(@RequestBody BitcoinDto bitcoin) {
-		Bitcoin domainBitcoin = service.updateBitcoinPay(bitcoin.getUserID(), bitcoin.getAmount());
-		BitcoinDto bitcoinDto = convertToDto(domainBitcoin);
-		return bitcoinDto;
-	}
+//	@PutMapping(value = { "/bitcoins"}, consumes = "application/json", produces = "application/json")
+//	public BitcoinDto updateBitcoinPay(@RequestBody BitcoinDto bitcoin) {
+//		Bitcoin domainBitcoin = service.updateBitcoinPay(bitcoin.getUserID(), bitcoin.getAmount());
+//		BitcoinDto bitcoinDto = convertToDto(domainBitcoin);
+//		return bitcoinDto;
+//	}
 
 	@GetMapping(value = { "/bitcoins", "/bitcoins/" })
 	public List<BitcoinDto> getAllBitcoinPays() {
@@ -237,15 +249,15 @@ public class EventRegistrationRestController {
 		return bitcoinDtos;
 	}
 
-	@GetMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
-	public BitcoinDto getBitcoinPayByUserID(@PathVariable("userID") String userID) throws IllegalArgumentException {
-		return convertToDto(service.getBitcoinPay(userID));
-	}
+//	@GetMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
+//	public BitcoinDto getBitcoinPayByUserID(@PathVariable("userID") String userID) throws IllegalArgumentException {
+//		return convertToDto(service.getBitcoinPay(userID));
+//	}
 
-	@DeleteMapping(value = { "/bitcoins/{userID}" })
-	public void deleteBitcoinPay(@PathVariable("userID") String userID) throws IllegalArgumentException{
-		service.deleteBitcoinPay(userID);
-	}
+//	@DeleteMapping(value = { "/bitcoins/{userID}" })
+//	public void deleteBitcoinPay(@PathVariable("userID") String userID) throws IllegalArgumentException{
+//		service.deleteBitcoinPay(userID);
+//	}
 
 	// Model - DTO conversion methods (not part of the API)
 
@@ -333,6 +345,16 @@ public class EventRegistrationRestController {
 		for (Organizer organizer : allOrganizers) {
 			if (organizer.getName().equals(oDto.getName())) {
 				return organizer;
+			}
+		}
+		return null;
+	}
+	
+	private Registration convertToDomainObject(RegistrationDto rDto) {
+		List<Registration> allregistrations = service.getAllRegistrations();
+		for (Registration registration : allregistrations) {
+			if (registration.getId() == rDto.getId()) {
+				return registration;
 			}
 		}
 		return null;
