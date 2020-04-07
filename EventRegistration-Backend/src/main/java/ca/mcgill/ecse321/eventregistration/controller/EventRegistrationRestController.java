@@ -41,7 +41,7 @@ public class EventRegistrationRestController {
 		Person person = service.createPerson(name);
 		return convertToDto(person);
 	}
-	
+
 
 	// @formatter:off
 	// Example REST call:
@@ -50,7 +50,7 @@ public class EventRegistrationRestController {
 	public EventDto createEvent(@PathVariable("name") String name, @RequestParam Date date,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime)
-			throws IllegalArgumentException {
+					throws IllegalArgumentException {
 		// @formatter:on
 		Event event = service.createEvent(name, date, Time.valueOf(startTime), Time.valueOf(endTime));
 		return convertToDto(event);
@@ -70,6 +70,19 @@ public class EventRegistrationRestController {
 		return convertToDto(r, p, e);
 	}
 
+	@PostMapping(value = { "/event", "/event/" })
+	public EventDto organizesEvent(@RequestParam(name = "organizer") OrganizerDto oDto,
+			@RequestParam(name = "event") EventDto eDto) throws IllegalArgumentException {
+		// @formatter:on
+
+		// Both the organizer and the event are identified by their names
+		Organizer o = service.getOrganizer(oDto.getName());
+		Event e = service.getEvent(eDto.getName());
+
+		e = service.organizesEvent(o, e);
+		return convertToDto(e);
+	}
+
 
 	// GET Mappings
 
@@ -82,7 +95,7 @@ public class EventRegistrationRestController {
 		return eventDtos;
 	}
 
-	
+
 	// Example REST call:
 	// http://localhost:8088/events/person/JohnDoe
 	@GetMapping(value = { "/events/person/{name}", "/events/person/{name}/" })
@@ -90,7 +103,7 @@ public class EventRegistrationRestController {
 		Person p = convertToDomainObject(pDto);
 		return createAttendedEventDtosForPerson(p);
 	}
-		
+
 
 	@GetMapping(value = { "/persons/{name}", "/persons/{name}/" })
 	public PersonDto getPersonByName(@PathVariable("name") String name) throws IllegalArgumentException {
@@ -132,25 +145,25 @@ public class EventRegistrationRestController {
 		return convertToDto(service.getEvent(name));
 	}
 
-	
+
 	@PostMapping(value = { "/organizers/{name}", "/organizers/{name}/" })
 	public OrganizerDto createOrganizer(@PathVariable("name") String name) throws IllegalArgumentException {
 		// @formatter:on
 		Organizer organizer = service.createOrganizer(name);
 		return convertToDto(organizer);
 	}
-	
+
 	@GetMapping(value = { "/events/organizer/{name}", "/events/organizer/{name}/" })
 	public List<EventDto> getEventsOfOrganizer(@PathVariable("name") OrganizerDto oDto) {
 		Organizer o = convertToDomainObject(oDto);
 		return createOrganizedEventDtosForOrganizer(o);
 	}
-	
+
 	@GetMapping(value = { "/organizers/{name}", "/organizers/{name}/" })
 	public OrganizerDto getOrganizerByName(@PathVariable("name") String name) throws IllegalArgumentException {
 		return convertToDto(service.getOrganizer(name));
 	}
-	
+
 	@GetMapping(value = { "/organizers", "/organizers/" })
 	public List<OrganizerDto> getAllOrganizers() {
 		List<OrganizerDto> organizers = new ArrayList<>();
@@ -159,22 +172,22 @@ public class EventRegistrationRestController {
 		}
 		return organizers;
 	}
-	
+
 	@DeleteMapping(value = { "/organizers/{name}" })
 	public void deleteOrganizer(@PathVariable("name") String name) throws IllegalArgumentException{
 		service.deleteOrganizer(name);
 	}
-	
+
 	@PostMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
 	public CarShowDto createCarShow(@PathVariable("name") String name, @RequestParam Date date,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime, String make)
-			throws IllegalArgumentException {
+					throws IllegalArgumentException {
 		// @formatter:on
 		CarShow carShow = service.createCarShow(name, date, Time.valueOf(startTime), Time.valueOf(endTime), make);
 		return convertToDto(carShow);
 	}
-	
+
 	@GetMapping(value = { "/carShows", "/carShows/" })
 	public List<CarShowDto> getAllCarShows() {
 		List<CarShowDto> carShowDtos = new ArrayList<>();
@@ -183,38 +196,38 @@ public class EventRegistrationRestController {
 		}
 		return carShowDtos;
 	}
-	
+
 	@GetMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
 	public CarShowDto getCarShowByName(@PathVariable("name") String name) throws IllegalArgumentException {
 		return convertToDto(service.getCarShow(name));
 	}
-	
+
 	@PutMapping(value = { "/carShows"}, consumes = "application/json", produces = "application/json")
 	public CarShowDto updateCarShow(@RequestBody CarShowDto carShow) {
 		CarShow domainCarShow = service.updateCarShow(carShow.getName(), carShow.getDate(),carShow.getStartTime(), carShow.getEndTime(), carShow.getMake());
 		CarShowDto carShowDto = convertToDto(domainCarShow);
 		return carShowDto;
 	}
-	
+
 	@DeleteMapping(value = { "/carShows/{name}" })
 	public void deleteCarShow(@PathVariable("name") String name) throws IllegalArgumentException{
 		service.deleteCarShow(name);
 	}
-	
+
 	@PostMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
 	public BitcoinDto createBitcoinPay(@PathVariable("userID") String userID, @RequestParam int amount) throws IllegalArgumentException {
 		// @formatter:on
 		Bitcoin bitcoin = service.createBitcoinPay(userID, amount);
 		return convertToDto(bitcoin);
 	}
-	
+
 	@PutMapping(value = { "/bitcoins"}, consumes = "application/json", produces = "application/json")
 	public BitcoinDto updateBitcoinPay(@RequestBody BitcoinDto bitcoin) {
 		Bitcoin domainBitcoin = service.updateBitcoinPay(bitcoin.getUserID(), bitcoin.getAmount());
 		BitcoinDto bitcoinDto = convertToDto(domainBitcoin);
 		return bitcoinDto;
 	}
-	
+
 	@GetMapping(value = { "/bitcoins", "/bitcoins/" })
 	public List<BitcoinDto> getAllBitcoinPays() {
 		List<BitcoinDto> bitcoinDtos = new ArrayList<>();
@@ -223,12 +236,12 @@ public class EventRegistrationRestController {
 		}
 		return bitcoinDtos;
 	}
-	
+
 	@GetMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
 	public BitcoinDto getBitcoinPayByUserID(@PathVariable("userID") String userID) throws IllegalArgumentException {
 		return convertToDto(service.getBitcoinPay(userID));
 	}
-	
+
 	@DeleteMapping(value = { "/bitcoins/{userID}" })
 	public void deleteBitcoinPay(@PathVariable("userID") String userID) throws IllegalArgumentException{
 		service.deleteBitcoinPay(userID);
@@ -241,6 +254,7 @@ public class EventRegistrationRestController {
 			throw new IllegalArgumentException("There is no such Event!");
 		}
 		EventDto eventDto = new EventDto(e.getName(), e.getDate(), e.getStartTime(), e.getEndTime());
+		//eventDto.setOrganizer(convertToDto(e.getOrganizer()));
 		return eventDto;
 	}
 
@@ -268,16 +282,17 @@ public class EventRegistrationRestController {
 		RegistrationDto rDto = new RegistrationDto(pDto, eDto);
 		return rDto;
 	}
-	
+
 	private OrganizerDto convertToDto(Organizer o) {
 		if (o == null) {
 			throw new IllegalArgumentException("There is no such Organizer!");
 		}
 		OrganizerDto organizerDto = new OrganizerDto(o.getName());
-		organizerDto.setEventsAttended(createOrganizedEventDtosForOrganizer(o));
+		organizerDto.setOrganizes(createOrganizedEventDtosForOrganizer(o));
+		organizerDto.setEventsAttended(createAttendedEventDtosForPerson(o));
 		return organizerDto;
 	}
-	
+
 
 	private CarShowDto convertToDto(CarShow c) {
 		if (c == null) {
@@ -286,7 +301,7 @@ public class EventRegistrationRestController {
 		CarShowDto carShowDto = new CarShowDto(c.getName(), c.getDate(), c.getStartTime(), c.getEndTime(), c.getMake());
 		return carShowDto;
 	}
-	
+
 	private BitcoinDto convertToDto(Bitcoin b) {
 		if (b == null) {
 			throw new IllegalArgumentException("There is no such Bitcoin!");
@@ -312,7 +327,7 @@ public class EventRegistrationRestController {
 		}
 		return null;
 	}
-	
+
 	private Organizer convertToDomainObject(OrganizerDto oDto) {
 		List<Organizer> allOrganizers = service.getAllOrganizers();
 		for (Organizer organizer : allOrganizers) {
@@ -343,16 +358,18 @@ public class EventRegistrationRestController {
 		}
 		return registrations;
 	}
-	
-	
+
+
 	private List<EventDto> createOrganizedEventDtosForOrganizer(Organizer o) {
 		List<Event> eventsForOrganizer = service.getOrganizes(o);
 		List<EventDto> events = new ArrayList<>();
-		for (Event event : eventsForOrganizer) {
-			events.add(convertToDto(event));
+		if(o.getOrganizes() != null) {
+			for (Event event : eventsForOrganizer) {
+				events.add(convertToDto(event));
+			}
 		}
 		return events;
 	}
-	
-	
+
+
 }

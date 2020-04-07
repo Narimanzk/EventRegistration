@@ -6,6 +6,7 @@ public class RegistrationDto {
 	private EventDto event;
 	private BitcoinDto bitcoin;
 	private Integer id;
+	private OrganizerDto organizer;
 
 	public RegistrationDto() {
 	}
@@ -28,6 +29,15 @@ public class RegistrationDto {
 		this.event = event;
 		this.bitcoin = bitcoin;
 	}
+	
+	
+
+	public RegistrationDto(OrganizerDto organizer, EventDto event) {
+		this.event = event;
+		this.organizer = organizer;
+	}
+
+
 
 	public EventDto getEvent() {
 		return event;
@@ -60,6 +70,19 @@ public class RegistrationDto {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+
+
+	public OrganizerDto getOrganizer() {
+		return organizer;
+	}
+
+
+
+	public void setOrganizer(OrganizerDto organizer) {
+		this.organizer = organizer;
+	}
+	
 	
 	
 

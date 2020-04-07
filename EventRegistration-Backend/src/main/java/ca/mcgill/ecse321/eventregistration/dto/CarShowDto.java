@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.eventregistration.dto;
 import java.sql.Date;
 import java.sql.Time;
 
+import ca.mcgill.ecse321.eventregistration.model.Organizer;
+
 public class CarShowDto {
 	
 	private String name;
@@ -10,6 +12,7 @@ public class CarShowDto {
 	private Time startTime;
 	private Time endTime;
 	private String make;
+	private Organizer organizer;
 	
 	
 	public CarShowDto() {
@@ -85,6 +88,18 @@ public class CarShowDto {
 	public void setMake(String make) {
 		this.make = make;
 	}
+
+
+	public Organizer getOrganizer() {
+		return organizer;
+	}
+
+
+	public void setOrganizer(Organizer organizer) {
+		this.organizer = organizer;
+	}
+	
+	
 	
 	
 

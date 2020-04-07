@@ -222,7 +222,7 @@ public class EventRegistrationService {
 	}
 
 	@Transactional
-	public void organizesEvent(Organizer organizer, Event event) {
+	public Event organizesEvent(Organizer organizer, Event event) {
 		String error = "";
 		if(organizer == null) {
 			error += "Organizer needs to be selected for organizes!";
@@ -230,6 +230,15 @@ public class EventRegistrationService {
 		if(eventRepository.findByName(event.getName()) == null) {
 			error += "Event does not exist!";
 		}
+		if(organizer != null) {
+			for(int i=0; i<getOrganizes(organizer).size();i++) {
+				if((getOrganizes(organizer).get(i).getName()).equals(event.getName())) {
+					error += "Organizer is already assigned to the event!";
+					break;
+				}
+			}
+		}
+
 		error = error.trim();
 		if(error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -241,6 +250,7 @@ public class EventRegistrationService {
 		organizer.getOrganizes().add(event);
 		organizerRepository.save(organizer);
 		eventRepository.save(event);
+		return event;
 
 	}
 
@@ -257,7 +267,7 @@ public class EventRegistrationService {
 		return organizerRepository.findByName(name);
 
 	}
-	
+
 	@Transactional
 	public List<Event> getOrganizes(Organizer organizer){
 		List<Event> organizes = new ArrayList<>();
