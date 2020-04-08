@@ -216,10 +216,28 @@ public class EventRegistrationService {
 		return organizer;
 	}
 	
+	//A
+	@Transactional
+	public Organizer getOrganizer(String name) {
+		String error = "";
+		if(name == null || name.trim().length() == 0) {
+			error += "Person name cannot be empty!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		return organizerRepository.findByName(name);
+
+	}
+	
+	
 	@Transactional
 	public List<Organizer> getAllOrganizers() {
 		return toList(organizerRepository.findAll());
 	}
+	
+	
 	//A
 	@Transactional
 	public Organizer organizesEvent(Organizer organizer, Event event) {
@@ -253,20 +271,7 @@ public class EventRegistrationService {
 		return organizer;
 
 	}
-	//A
-	@Transactional
-	public Organizer getOrganizer(String name) {
-		String error = "";
-		if(name == null || name.trim().length() == 0) {
-			error += "Person name cannot be empty!";
-		}
-		error = error.trim();
-		if(error.length() > 0) {
-			throw new IllegalArgumentException(error);
-		}
-		return organizerRepository.findByName(name);
 
-	}
 	//A
 	@Transactional
 	public List<Event> getOrganizes(Organizer organizer){
@@ -285,15 +290,8 @@ public class EventRegistrationService {
 		return organizes;
 	}
 
-//	@Transactional
-//	public void deleteOrganizer(String name) throws IllegalArgumentException{
-//		organizerRepository.deleteById(name);
-//	}
 	
-	@Transactional
-	public List<CarShow> getAllCarShows() {
-		return toList(carShowRepository.findAll());
-	}
+	
 	//A
 	@Transactional
 	public CarShow createCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
@@ -314,47 +312,13 @@ public class EventRegistrationService {
 
 	}
 
-//	@Transactional
-//	public CarShow updateCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
-//		String error = "";
-//		if(make == null || make.trim().length() == 0) {
-//			error += "CarShow make cannot be empty!";
-//		}
-//		if (name == null || name.trim().length() == 0) {
-//			error = error + "Event name cannot be empty! ";
-//		}
-//		if (carShowDate == null) {
-//			error = error + "Event date cannot be empty! ";
-//		}
-//		if (startTime == null) {
-//			error = error + "Event start time cannot be empty! ";
-//		}
-//		if (endTime == null) {
-//			error = error + "Event end time cannot be empty! ";
-//		}
-//		if (endTime != null && startTime != null && endTime.before(startTime)) {
-//			error = error + "Event end time cannot be before event start time!";
-//		}
-//		error = error.trim();
-//		if(error.length() > 0) {
-//			throw new IllegalArgumentException(error);
-//		}
-//		CarShow carShow = carShowRepository.findByName(name);
-//		carShow.setMake(make);
-//		carShowRepository.save(carShow);
-//		return carShow;
-//
-//	}
+	
+	@Transactional
+	public List<CarShow> getAllCarShows() {
+		return toList(carShowRepository.findAll());
+	}
 
-//	@Transactional
-//	public CarShow getCarShow(String name) {
-//		return carShowRepository.findByName(name);
-//	}
-
-//	@Transactional
-//	public void deleteCarShow(String name) throws IllegalArgumentException{
-//		carShowRepository.deleteById(name);
-//	}
+	
 	//A
 	@Transactional
 	public Bitcoin createBitcoinPay(String userID, int amount) {
@@ -377,26 +341,6 @@ public class EventRegistrationService {
 		return bitcoin;
 	}
 
-//	@Transactional
-//	public Bitcoin updateBitcoinPay(String userID, int amount) {
-//		Pattern BITCOIN_PATTERN = Pattern.compile("^\\w{4}-\\d{4}$");
-//		String error = "";
-//		if(userID == null || userID.trim().length() == 0 || !BITCOIN_PATTERN.matcher(userID).matches()) {
-//			error += "User id is null or has wrong format!";
-//		}
-//		if (amount < 0) {
-//			error += "Payment amount cannot be negative!";
-//		}
-//		error = error.trim();
-//		if(error.length() > 0) {
-//			throw new IllegalArgumentException(error);
-//		}
-//		Bitcoin bitcoin = bitcoinRepository.findByUserID(userID);
-//		bitcoin.setAmount(amount);
-//		bitcoinRepository.save(bitcoin);
-//		return bitcoin;
-//
-//	}
 	//A
 	@Transactional
 	public Registration pay(Registration registration, Bitcoin bitcoin) {
@@ -417,19 +361,16 @@ public class EventRegistrationService {
 		}
 		return registration;
 	}
+	
+	@Transactional
+	public Bitcoin getBitcoinPay(String userID) {
+		return bitcoinRepository.findByUserID(userID);
+	}
 
 	@Transactional
 	public List<Bitcoin> getAllBitcoinPays(){
 		return toList(bitcoinRepository.findAll());
 	}
 
-	@Transactional
-	public Bitcoin getBitcoinPay(String userID) {
-		return bitcoinRepository.findByUserID(userID);
-	}
-	
-//	@Transactional
-//	public void deleteBitcoinPay(String userID) {
-//		bitcoinRepository.deleteById(userID);
-//	}
+
 }

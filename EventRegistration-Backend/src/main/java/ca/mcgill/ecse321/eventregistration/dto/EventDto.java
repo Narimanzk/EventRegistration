@@ -9,7 +9,6 @@ public class EventDto {
 	private Date date;
 	private Time startTime;
 	private Time endTime;
-	//private OrganizerDto organizer;
 
 	public EventDto() {
 	}
@@ -24,10 +23,6 @@ public class EventDto {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-	
-//	public EventDto(OrganizerDto organizer) {
-//		this.organizer = organizer;
-//	}
 
 	public String getName() {
 		return name;
@@ -45,12 +40,4 @@ public class EventDto {
 		return endTime;
 	}
 
-//	public OrganizerDto getOrganizer() {
-//		return organizer;
-//	}
-//
-//	public void setOrganizer(OrganizerDto organizer) {
-//		this.organizer = organizer;
-//	}
-	
 }
