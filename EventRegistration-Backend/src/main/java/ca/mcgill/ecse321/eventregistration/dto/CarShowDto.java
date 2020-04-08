@@ -12,7 +12,6 @@ public class CarShowDto {
 	private Time startTime;
 	private Time endTime;
 	private String make;
-	private Organizer organizer;
 	
 	
 	public CarShowDto() {
@@ -87,20 +86,6 @@ public class CarShowDto {
 
 	public void setMake(String make) {
 		this.make = make;
-	}
-
-
-	public Organizer getOrganizer() {
-		return organizer;
-	}
-
-
-	public void setOrganizer(Organizer organizer) {
-		this.organizer = organizer;
-	}
-	
-	
-	
-	
+	}	
 
 }

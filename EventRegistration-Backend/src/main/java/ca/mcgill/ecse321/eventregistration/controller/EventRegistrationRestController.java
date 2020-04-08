@@ -10,11 +10,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -174,11 +172,6 @@ public class EventRegistrationRestController {
 		return organizers;
 	}
 
-//	@DeleteMapping(value = { "/organizers/{name}" })
-//	public void deleteOrganizer(@PathVariable("name") String name) throws IllegalArgumentException{
-//		service.deleteOrganizer(name);
-//	}
-
 	@PostMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
 	public CarShowDto createCarShow(@PathVariable("name") String name, @RequestParam Date date,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime,
@@ -198,23 +191,6 @@ public class EventRegistrationRestController {
 		return carShowDtos;
 	}
 
-//	@GetMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
-//	public CarShowDto getCarShowByName(@PathVariable("name") String name) throws IllegalArgumentException {
-//		return convertToDto(service.getCarShow(name));
-//	}
-
-//	@PutMapping(value = { "/carShows"}, consumes = "application/json", produces = "application/json")
-//	public CarShowDto updateCarShow(@RequestBody CarShowDto carShow) {
-//		CarShow domainCarShow = service.updateCarShow(carShow.getName(), carShow.getDate(),carShow.getStartTime(), carShow.getEndTime(), carShow.getMake());
-//		CarShowDto carShowDto = convertToDto(domainCarShow);
-//		return carShowDto;
-//	}
-
-//	@DeleteMapping(value = { "/carShows/{name}" })
-//	public void deleteCarShow(@PathVariable("name") String name) throws IllegalArgumentException{
-//		service.deleteCarShow(name);
-//	}
-
 	@PostMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
 	public BitcoinDto createBitcoinPay(@PathVariable("userID") String userID, @RequestParam int amount) throws IllegalArgumentException {
 		// @formatter:on
@@ -232,14 +208,6 @@ public class EventRegistrationRestController {
 		return convertToDto(r);
 	}
 
-
-//	@PutMapping(value = { "/bitcoins"}, consumes = "application/json", produces = "application/json")
-//	public BitcoinDto updateBitcoinPay(@RequestBody BitcoinDto bitcoin) {
-//		Bitcoin domainBitcoin = service.updateBitcoinPay(bitcoin.getUserID(), bitcoin.getAmount());
-//		BitcoinDto bitcoinDto = convertToDto(domainBitcoin);
-//		return bitcoinDto;
-//	}
-
 	@GetMapping(value = { "/bitcoins", "/bitcoins/" })
 	public List<BitcoinDto> getAllBitcoinPays() {
 		List<BitcoinDto> bitcoinDtos = new ArrayList<>();
@@ -249,15 +217,6 @@ public class EventRegistrationRestController {
 		return bitcoinDtos;
 	}
 
-//	@GetMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
-//	public BitcoinDto getBitcoinPayByUserID(@PathVariable("userID") String userID) throws IllegalArgumentException {
-//		return convertToDto(service.getBitcoinPay(userID));
-//	}
-
-//	@DeleteMapping(value = { "/bitcoins/{userID}" })
-//	public void deleteBitcoinPay(@PathVariable("userID") String userID) throws IllegalArgumentException{
-//		service.deleteBitcoinPay(userID);
-//	}
 
 	// Model - DTO conversion methods (not part of the API)
 
