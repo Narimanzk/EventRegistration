@@ -215,7 +215,7 @@ public class EventRegistrationService {
 		organizerRepository.save(organizer);
 		return organizer;
 	}
-	
+
 	//A
 	@Transactional
 	public Organizer getOrganizer(String name) {
@@ -230,14 +230,14 @@ public class EventRegistrationService {
 		return organizerRepository.findByName(name);
 
 	}
-	
-	
+
+
 	@Transactional
 	public List<Organizer> getAllOrganizers() {
 		return toList(organizerRepository.findAll());
 	}
-	
-	
+
+
 	//A
 	@Transactional
 	public Organizer organizesEvent(Organizer organizer, Event event) {
@@ -290,8 +290,8 @@ public class EventRegistrationService {
 		return organizes;
 	}
 
-	
-	
+
+
 	//A
 	@Transactional
 	public CarShow createCarShow(String name, Date carShowDate, Time startTime, Time endTime, String make) {
@@ -312,13 +312,13 @@ public class EventRegistrationService {
 
 	}
 
-	
+
 	@Transactional
 	public List<CarShow> getAllCarShows() {
 		return toList(carShowRepository.findAll());
 	}
 
-	
+
 	//A
 	@Transactional
 	public Bitcoin createBitcoinPay(String userID, int amount) {
@@ -348,6 +348,11 @@ public class EventRegistrationService {
 		if(registration == null || bitcoin == null) {
 			error += "Registration and payment cannot be null!";
 		}
+		if(registration.getBitcoin() != null) {
+			if(registration.getBitcoin().getUserID().equals(bitcoin.getUserID())) {
+				error += "Payment already exists for this registration!";
+			}
+		}
 		error = error.trim();
 		if(error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -361,15 +366,19 @@ public class EventRegistrationService {
 		}
 		return registration;
 	}
-	
-	@Transactional
-	public Bitcoin getBitcoinPay(String userID) {
-		return bitcoinRepository.findByUserID(userID);
-	}
 
 	@Transactional
-	public List<Bitcoin> getAllBitcoinPays(){
-		return toList(bitcoinRepository.findAll());
+	public Bitcoin getBitcoinPay(String userID) {
+		Pattern BITCOIN_PATTERN = Pattern.compile("^\\w{4}-\\d{4}$");
+		String error = "";
+		if(userID == null || userID.trim().length() == 0 || !BITCOIN_PATTERN.matcher(userID).matches()) {
+			error += "User id is null or has wrong format!";
+		}
+		error = error.trim();
+		if(error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		return bitcoinRepository.findByUserID(userID);
 	}
 
 

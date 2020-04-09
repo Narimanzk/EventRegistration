@@ -208,15 +208,6 @@ public class EventRegistrationRestController {
 		return convertToDto(r);
 	}
 
-	@GetMapping(value = { "/bitcoins", "/bitcoins/" })
-	public List<BitcoinDto> getAllBitcoinPays() {
-		List<BitcoinDto> bitcoinDtos = new ArrayList<>();
-		for (Bitcoin bitcoin : service.getAllBitcoinPays()) {
-			bitcoinDtos.add(convertToDto(bitcoin));
-		}
-		return bitcoinDtos;
-	}
-
 
 	// Model - DTO conversion methods (not part of the API)
 

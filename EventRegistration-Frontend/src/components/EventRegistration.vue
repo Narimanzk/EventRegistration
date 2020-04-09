@@ -5,6 +5,8 @@
       <tr>
         <th>Name</th>
         <th>Events</th>
+        <th>Payment ID</th>
+        <th>Amount($)</th>
       </tr>
       <tr v-for="(person, i) in persons" v-bind:key="`person-${i}`">
         <td>{{person.name}}</td>
@@ -37,6 +39,7 @@
         <th>Date</th>
         <th>Start</th>
         <th>End</th>
+        <th>Make</th>
       </tr>
       <tr v-for="(event, i) in events" v-bind:id="event.name" v-bind:key="`event-${i}`">
         <td v-bind:id="`${event.name.replace(/\s/g, '_')}-name`">{{event.name}}</td>
@@ -56,6 +59,9 @@
         </td>
         <td>
           <input id="event-endtime-input" type="time" v-model="newEvent.endTime" placeholder="HH:mm">
+        </td>
+        <td>
+          <input id="event-make-input" type="text" v-model="newEvent.make" placeholder="Event Make">
         </td>
         <td>
           <button id="event-create-button" v-bind:disabled="!newEvent.name" v-on:click="createEvent(newEvent)">Create</button>
@@ -80,6 +86,23 @@
     <button id='registration-button' v-bind:disabled="!selectedPerson || !selectedEvent" @click="registerEvent(selectedPerson, selectedEvent)">Register</button>
     <br/>
     <span v-if="errorRegistration" style="color:red">Error: {{errorRegistration}}</span>
+    <hr>
+    <h2>Assign Organizers</h2>
+    <label>Organizer:
+      <select id='registration-organizer-select' v-model="selectedOrganizer">
+        <option disabled value="">Please select one</option>
+        <option v-for="(organizer, i) in organizers" v-bind:key="`organizer-${i}`">{{organizer.name}}</option>
+      </select>
+    </label>
+    <label>Event:
+      <select id='registration-event-select' v-model="selectedEvent">
+        <option disabled value="">Please select one</option>
+        <option v-for="(event, i) in events" v-bind:key="`event-${i}`">{{event.name}}</option>
+      </select>
+    </label>
+    <button id='assign-button' v-bind:disabled="!selectedOrganizer || !selectedEvent" @click="assignEvent(selectedOrganizer, selectedEvent)">Assign</button>
+    <br/>
+    <span v-if="errorAssignment" style="color:red">Error: {{errorAssignment}}</span>
     <hr>
   </div>
 </template>
