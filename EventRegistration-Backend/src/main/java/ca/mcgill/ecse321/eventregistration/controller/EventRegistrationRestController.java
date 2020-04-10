@@ -169,7 +169,7 @@ public class EventRegistrationRestController {
 		return organizers;
 	}
 
-	@PostMapping(value = { "/carShows/{name}/{make}", "/carShows/{name}/{make}" })
+	@PostMapping(value = { "/events/{name}/{make}", "/events/{name}/{make}" })
 	public CarShowDto createCarShow(@PathVariable("name") String name, @PathVariable("make") String make, @RequestParam Date date,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime)
@@ -188,10 +188,10 @@ public class EventRegistrationRestController {
 		return carShowDtos;
 	}
 
-	@PostMapping(value = { "/bitcoins/{userID}", "/bitcoins/{userID}/" })
-	public BitcoinDto createBitcoinPay(@PathVariable("userID") String userID, @RequestParam int amount) throws IllegalArgumentException {
+	@PostMapping(value = { "/bitcoin/{id}", "/bitcoin/{id}/" })
+	public BitcoinDto createBitcoinPay(@PathVariable("id") String id, @RequestParam int amount) throws IllegalArgumentException {
 		// @formatter:on
-		Bitcoin bitcoin = service.createBitcoinPay(userID, amount);
+		Bitcoin bitcoin = service.createBitcoinPay(id, amount);
 		return convertToDto(bitcoin);
 	}
 
