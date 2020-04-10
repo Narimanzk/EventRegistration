@@ -192,6 +192,19 @@ public class EventRegistrationService {
 		}
 		return resultList;
 	}
+
+
+	@Transactional
+	public boolean isRegisteredForEvent(Person person, Event event) {
+		if (person == null || event == null) {
+			throw new IllegalArgumentException("Person or Event cannot be null!");
+		}
+
+		return registrationRepository.existsByPersonAndEvent(person, event);
+	}
+
+
+
 	//A
 	@Transactional
 	public Organizer createOrganizer(String name) {
@@ -379,6 +392,35 @@ public class EventRegistrationService {
 			throw new IllegalArgumentException(error);
 		}
 		return bitcoinRepository.findByUserID(userID);
+	}
+
+
+	@Transactional
+	public List<Bitcoin> getBitcoinsByPerson(Person person) {
+		if (person == null) {
+			throw new IllegalArgumentException("Person cannot be null!");
+		}
+
+		List<Bitcoin> bitcoinsByPerson = new ArrayList<>();
+		for (Registration r : registrationRepository.findByPerson(person)) {
+			if (r.getBitcoin() != null)
+				bitcoinsByPerson.add(r.getBitcoin());
+		}
+		return bitcoinsByPerson;	
+	}
+
+
+	@Transactional
+	public List<Bitcoin> getAllBitcoins() {
+		return toList(bitcoinRepository.findAll());
+	}
+
+	@Transactional
+	public boolean isBitcoinExist(String userID) {
+		if (userID == null || userID.isEmpty()) {
+			throw new IllegalArgumentException("Bitcoin cannot be null or empty!");
+		}
+		return bitcoinRepository.existsById(userID);
 	}
 
 
