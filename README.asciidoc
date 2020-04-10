@@ -10,9 +10,9 @@ This README gives you a general overview of what you will need to do to complete
 
 Once you have completed the assignment, please replace the two placeholders with the Backend and Frontend server URLs so that the graders can find your deployed apps easily.
 
-Backend URL: _To be added once ready_
+Backend URL: eventregistration-backend-asg.herokuapp.com
 
-Frontend URL: _To be added once ready_
+Frontend URL: eventregistration-frontend-asg.herokuapp.com
 
 == Backend
 
