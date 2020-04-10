@@ -19,15 +19,15 @@
         </td>
         <td>
           <ul>
-            <li v-for="(creditCard, i) in person.creditCards" v-bind:key="`event-${i}`">
-              <span class='registration-event-name'>{{creditCard.accountNumber}}</span>
+            <li v-for="(bitcoin, i) in person.bitcoins" v-bind:key="`event-${i}`">
+              <span class='registration-event-name'>{{bitcoin.userID}}</span>
             </li>
           </ul>
         </td>
         <td>
           <ul>
-            <li v-for="(creditCard, i) in person.creditCards" v-bind:key="`event-${i}`">
-              <span class='registration-event-name'>{{creditCard.amount}}</span>
+            <li v-for="(bitcoin, i) in person.bitcoins" v-bind:key="`event-${i}`">
+              <span class='registration-event-name'>{{bitcoin.amount}}</span>
             </li>
           </ul>
         </td>
