@@ -5,15 +5,12 @@ import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.eventregistration.model.*;
@@ -172,10 +169,10 @@ public class EventRegistrationRestController {
 		return organizers;
 	}
 
-	@PostMapping(value = { "/carShows/{name}", "/carShows/{name}/" })
-	public CarShowDto createCarShow(@PathVariable("name") String name, @RequestParam Date date,
+	@PostMapping(value = { "/carShows/{name}/{make}", "/carShows/{name}/{make}" })
+	public CarShowDto createCarShow(@PathVariable("name") String name, @PathVariable("make") String make, @RequestParam Date date,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime,
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime, String make)
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime)
 					throws IllegalArgumentException {
 		// @formatter:on
 		CarShow carShow = service.createCarShow(name, date, Time.valueOf(startTime), Time.valueOf(endTime), make);
@@ -198,14 +195,52 @@ public class EventRegistrationRestController {
 		return convertToDto(bitcoin);
 	}
 
+//	@PostMapping(value = { "/pay", "/pay/" })
+//	public RegistrationDto pay(@RequestBody Map<String, Object> payload) throws IllegalArgumentException {
+//		Person p = service.getPerson((String) payload.get("person"));
+//		Event e = service.getEvent((String) payload.get("event"));
+//		Registration r = service.getRegistrationByPersonAndEvent(p, e);
+//		Bitcoin bitcoin = service.getBitcoinPay((String) payload.get("bitcoin"));
+//		service.pay(r, bitcoin);
+//		return convertToDto(r);
+//	}
+	
 	@PostMapping(value = { "/pay", "/pay/" })
-	public RegistrationDto pay(@RequestBody Map<String, Object> payload) throws IllegalArgumentException {
-		Person p = service.getPerson((String) payload.get("person"));
-		Event e = service.getEvent((String) payload.get("event"));
-		Registration r = service.getRegistrationByPersonAndEvent(p, e);
-		Bitcoin bitcoin = service.getBitcoinPay((String) payload.get("bitcoin"));
-		service.pay(r, bitcoin);
-		return convertToDto(r);
+	public BitcoinDto pay(@RequestParam(name = "person") PersonDto pDto,
+			@RequestParam(name = "event") EventDto eDto, @RequestParam String bitcoin,
+			@RequestParam int amount) throws IllegalArgumentException {
+		
+		if (amount < 0) {
+			throw new IllegalArgumentException();
+		}
+		Person p = service.getPerson(pDto.getName());
+		Event e = service.getEvent(eDto.getName());
+		Registration r;
+		if (!service.isRegisteredForEvent(p, e))
+			r = service.register(p, e);
+		else
+			r = service.getRegistrationByPersonAndEvent(p, e);
+		
+		Bitcoin b;
+		if (!service.isBitcoinExist(bitcoin)) {
+			b = service.createBitcoinPay(bitcoin, amount);
+			service.pay(r, b);
+		} else {
+			b = service.getBitcoinPay(bitcoin);
+			b.setAmount(b.getAmount() + amount);
+		}
+		
+		
+		return convertToDto(b);
+	}
+	
+	@GetMapping(value = { "/bitcoins", "/bitcoins/" })
+	public List<BitcoinDto> getAllBitcoins() {
+		List<BitcoinDto> bitcoinDtos = new ArrayList<>();
+		for (Bitcoin bitcoin : service.getAllBitcoins()) {
+			bitcoinDtos.add(convertToDto(bitcoin));
+		}
+		return bitcoinDtos;
 	}
 
 
