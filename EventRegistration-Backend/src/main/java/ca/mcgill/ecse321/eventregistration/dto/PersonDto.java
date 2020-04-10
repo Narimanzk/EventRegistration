@@ -7,6 +7,7 @@ public class PersonDto {
 
 	private String name;
 	private List<EventDto> eventsAttended;
+	private List<BitcoinDto> bitcoins;
 
 	public PersonDto() {
 	}
@@ -32,4 +33,14 @@ public class PersonDto {
 	public void setEventsAttended(List<EventDto> events) {
 		this.eventsAttended = events;
 	}
+
+	public List<BitcoinDto> getBitcoins() {
+		return bitcoins;
+	}
+
+	public void setBitcoins(List<BitcoinDto> bitcoins) {
+		this.bitcoins = bitcoins;
+	}
+	
+	
 }
